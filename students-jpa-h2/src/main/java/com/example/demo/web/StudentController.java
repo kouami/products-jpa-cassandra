@@ -3,12 +3,14 @@ package com.example.demo.web;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.domain.Student;
+import com.example.demo.event.StudentEvent;
 import com.example.demo.repository.StudentRepository;
 
 //https://springframework.guru/spring-boot-web-application-part-4-spring-mvc/
@@ -18,6 +20,9 @@ public class StudentController {
 	
 	@Autowired
 	private StudentRepository repo;
+	
+	@Autowired
+    private ApplicationEventPublisher studentEventPublisher;
 	
 	@RequestMapping("/index")
 	public String index(Model model) {
@@ -65,6 +70,9 @@ public class StudentController {
 			s.setLastName(student.getLastName());
 			repo.saveAndFlush(s);
 		}
+		
+		StudentEvent event = new StudentEvent(this, s);
+		studentEventPublisher.publishEvent(event);
 		
 		return "redirect:/index";
 	}

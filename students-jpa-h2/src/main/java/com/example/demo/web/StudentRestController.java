@@ -6,6 +6,7 @@ package com.example.demo.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ public class StudentRestController {
 	
 	@Autowired
 	private StudentRepository repo;
+	
 	
 	@RequestMapping(value="/students/{firstName}/{lastName}", method = RequestMethod.GET)
 	public Student getStudentByFirstNameAndLastName(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
